@@ -1,6 +1,6 @@
 {
-	"name": "aws-amplify-monorepo",
-	"private": true,
+	"name": "connexion-mobility-ltd-aws-amplify",
+	"private": false,
 	"version": "0.1.30",
 	"description": "",
 	"scripts": {
@@ -66,7 +66,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/aws-amplify/amplify-js.git"
+		"url": "https://github.com/connexion-mobility-ltd/amplify-js"
 	},
 	"author": "Amazon Web Services",
 	"license": "Apache-2.0",

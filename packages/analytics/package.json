@@ -1,6 +1,6 @@
 {
-	"name": "@aws-amplify/analytics",
-	"version": "7.0.63",
+	"name": "@connexion-mobility-ltd/aws-amplify-analytics",
+	"version": "7.0.64",
 	"description": "Analytics category of aws-amplify",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.mjs",
@@ -100,10 +100,10 @@
 		"tslib": "^2.5.0"
 	},
 	"peerDependencies": {
-		"@aws-amplify/core": "^6.1.0"
+		"@connexion-mobility-ltd/aws-amplify-core": "^6.1.0"
 	},
 	"devDependencies": {
-		"@aws-amplify/core": "6.7.3",
+		"@connexion-mobility-ltd/aws-amplify-core": "6.7.3",
 		"@aws-amplify/react-native": "1.1.6",
 		"@aws-sdk/types": "3.398.0",
 		"typescript": "5.0.2"
