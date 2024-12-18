@@ -1,14 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { AnalyticsAction } from '@aws-amplify/core/internals/utils';
 import {
 	UpdateEndpointException,
 	updateEndpoint,
 } from '@aws-amplify/core/internals/providers/pinpoint';
 
 import { AnalyticsValidationErrorCode } from '../../../errors';
-import { getAnalyticsUserAgentString } from '../../../utils';
 import { IdentifyUserInput } from '../types';
 import { resolveConfig, resolveCredentials } from '../utils';
 
@@ -65,15 +63,34 @@ export const identifyUser = async ({
 	const { credentials, identityId } = await resolveCredentials();
 	const { appId, region } = resolveConfig();
 	const { userAttributes } = options ?? {};
-	await updateEndpoint({
-		appId,
-		category: 'Analytics',
-		credentials,
-		identityId,
-		region,
-		userAttributes,
-		userId,
-		userProfile,
-		userAgentValue: getAnalyticsUserAgentString(AnalyticsAction.IdentifyUser),
+
+	const channelTypes = [
+		{
+			channelType: 'IN_APP',
+			category: 'InAppMessaging',
+		},
+		{
+			channelType: 'EMAIL',
+			category: 'Analytics',
+		},
+	];
+
+	const endpointPromises = channelTypes.map(({ channelType, category }) => {
+		const payload = {
+			userId,
+			address: userId,
+			channelType,
+			appId,
+			category,
+			credentials,
+			identityId,
+			region,
+			userAttributes,
+			userProfile,
+			optOut: 'NONE',
+		};
+
+		return updateEndpoint(payload as any);
 	});
+	await Promise.all(endpointPromises);
 };

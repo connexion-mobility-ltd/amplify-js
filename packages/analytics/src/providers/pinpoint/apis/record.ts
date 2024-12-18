@@ -6,7 +6,7 @@ import {
 	AMPLIFY_SYMBOL,
 	AnalyticsAction,
 } from '@aws-amplify/core/internals/utils';
-import { record as recordCore } from '@aws-amplify/core/internals/providers/pinpoint';
+import { record as record$1 } from '@aws-amplify/core/internals/providers/pinpoint';
 
 import {
 	AnalyticsValidationErrorCode,
@@ -62,26 +62,43 @@ export const record = (input: RecordInput): void => {
 	assertValidationError(!!input.name, AnalyticsValidationErrorCode.NoEventName);
 
 	resolveCredentials()
-		.then(({ credentials, identityId }) => {
+		.then(async ({ credentials, identityId }) => {
 			Hub.dispatch(
 				'analytics',
 				{ event: 'record', data: input, message: 'Recording Analytics event' },
 				'Analytics',
 				AMPLIFY_SYMBOL,
 			);
-			recordCore({
-				appId,
-				category: 'Analytics',
-				credentials,
-				event: input,
-				identityId,
-				region,
-				userAgentValue: getAnalyticsUserAgentString(AnalyticsAction.Record),
-				bufferSize,
-				flushSize,
-				flushInterval,
-				resendLimit,
+			const channelTypes = [
+				{
+					channelType: 'IN_APP',
+					category: 'InAppMessaging',
+				},
+				{
+					channelType: 'EMAIL',
+					category: 'Analytics',
+				},
+			];
+
+			const recordPromises = channelTypes.map(({ channelType, category }) => {
+				const payload = {
+					appId,
+					category,
+					channelType,
+					credentials,
+					event: input,
+					identityId,
+					region,
+					userAgentValue: getAnalyticsUserAgentString(AnalyticsAction.Record),
+					bufferSize,
+					flushSize,
+					flushInterval,
+					resendLimit,
+				};
+
+				return record$1(payload as any);
 			});
+			await Promise.all(recordPromises);
 		})
 		.catch(e => {
 			// An error occured while fetching credentials or persisting the event to the buffer
