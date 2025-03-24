@@ -71,10 +71,6 @@ export const record = (input: RecordInput): void => {
 			);
 			const channelTypes = [
 				{
-					channelType: 'IN_APP',
-					category: 'InAppMessaging',
-				},
-				{
 					channelType: 'EMAIL',
 					category: 'Analytics',
 				},

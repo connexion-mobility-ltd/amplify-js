@@ -66,10 +66,6 @@ export const identifyUser = async ({
 
 	const channelTypes = [
 		{
-			channelType: 'IN_APP',
-			category: 'InAppMessaging',
-		},
-		{
 			channelType: 'EMAIL',
 			category: 'Analytics',
 		},
