@@ -1,7 +1,7 @@
 {
 	"name": "connexion-mobility-ltd-aws-amplify",
 	"private": false,
-	"version": "0.1.30",
+	"version": "0.1.32",
 	"description": "",
 	"scripts": {
 		"setup-dev": "yarn && yarn bootstrap && yarn link-all && yarn build",
